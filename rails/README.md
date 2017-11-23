@@ -16,25 +16,42 @@ bin/rails db:setup
 bin/rails s
 ```
 
+## Deployment
+
+There is a demo app running on Heroku, see example requests below.
+
 ## Example API Requests
+
+For Heroku demo server:
+
+```
+export BASE_URL=https://api-auth-rails.herokuapp.com
+```
+
+For locally running server:
+
+```
+export BASE_URL=http://localhost:3000
+```
 
 Examples below with [httpie](https://httpie.org):
 
 ```
-export BASE_URL=http://localhost:3000
+alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
+export EMAIL="admin-$(uuid)@example.com"
 
 # Successful register (=> 201)
-echo '{"user": {"email": "admin@example.com", "password": "123"}}' | http POST $BASE_URL/register
+echo "{\"user\": {\"email\": \"$EMAIL\", \"password\": \"123\"}}" | http POST $BASE_URL/register
 
-# Failed register (=> 422)
-echo '{"user": {"email": "admin@example.com", "password": "123"}}' | http POST $BASE_URL/register
+# Failed register (=> 422 (duplicate email))
+echo "{\"user\": {\"email\": \"$EMAIL\", \"password\": \"123\"}}" | http POST $BASE_URL/register
 
 # Successful login (=> 200, returns token)
-echo '{"email": "admin@example.com", "password": "123"}' | http POST $BASE_URL/login
+echo "{\"email\": \"$EMAIL\", \"password\": \"123\"}" | http POST $BASE_URL/login
 export TOKEN=<token-in-response-above>
 
 # Failed login attempt (=> 401)
-echo '{"email": "admin@example.com", "password": "122"}' | http POST $BASE_URL/login
+echo "{\"email\": \"$EMAIL\", \"password\": \"122\"}" | http POST $BASE_URL/login
 
 # Successful get user info (=> 200, returns recent_logins)
 http $BASE_URL/me Authorization:"Bearer $TOKEN"
@@ -45,9 +62,7 @@ http $BASE_URL/me
 
 ## TODO
 
-* Don't expose password_digest
 * Tests
-* Heroku deployment
 
 ## How this App was Created
 
@@ -93,3 +108,4 @@ bin/rails g controller users register login me
 ## Resources
 
 * [Token-based authentication with Ruby on Rails 5 API](https://www.pluralsight.com/guides/ruby-ruby-on-rails/token-based-authentication-with-ruby-on-rails-5-api)
+* [Rails 5 Heroku Deployment](https://devcenter.heroku.com/articles/getting-started-with-rails5)

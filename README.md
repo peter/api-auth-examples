@@ -3,8 +3,8 @@
 Example implementations of REST APIs with user registration and token (JWT)
 based login.
 
-* [Flask Example App](flask)
-* [Ruby on Rails Example App](rails)
+* [Flask App](flask)
+* [Ruby on Rails App](rails)
 
 ## TODO
 
@@ -57,3 +57,7 @@ Authentication as a Service:
 * [Auth0](https://auth0.com) (see [Auth0 - Python](https://github.com/auth0/auth0-python))
 * [Okta](https://developer.okta.com)
 * [AuthRocket](https://authrocket.com)
+
+Deployment:
+
+* [Pushing a subtree to Heroku](https://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)
