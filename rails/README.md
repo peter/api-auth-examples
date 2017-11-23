@@ -59,7 +59,7 @@ export TOKEN=<token-in-response-above>
 # Failed login attempt (=> 401)
 echo "{\"email\": \"$EMAIL\", \"password\": \"122\"}" | http POST $BASE_URL/login
 
-# Successful get user info (=> 200, returns recent_logins)
+# Successful get user info (=> 200, returns recent_successful_logins)
 http $BASE_URL/me Authorization:"Bearer $TOKEN"
 
 # Failed get user info (=> 401)
@@ -72,7 +72,7 @@ http $BASE_URL/me
 rails new api-auth --database=postgresql --api
 cd api-auth
 
-bin/rails g model User name email password_digest recent_logins:jsonb
+bin/rails g model User name email password_digest recent_successful_logins:jsonb recent_failed_logins:jsonb
 # Added to migration:
 # null: false to email and password_digest columns
 # add_index :users, [:email], :unique => true

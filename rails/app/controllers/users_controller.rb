@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    user = @current_user.attributes.slice('name', 'email', 'recent_logins')
+    user = @current_user.attributes.slice('name', 'email', 'recent_successful_logins', 'recent_failed_logins')
     render json: {user: user}
   end
 

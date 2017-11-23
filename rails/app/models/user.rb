@@ -8,8 +8,9 @@ class User < ApplicationRecord
   end
 
   def save_recent_login!(success)
-    login = {time: Time.zone.now, success: success}
-    self.recent_logins = ([login] + (self.recent_logins || [])).first(RECENT_LOGINS_LIMIT)
+    login = {time: Time.zone.now}
+    attribute = success ? :recent_successful_logins : :recent_failed_logins
+    self.send("#{attribute}=", ([login] + (self.send(attribute) || [])).first(RECENT_LOGINS_LIMIT))
     save!
   end
 end

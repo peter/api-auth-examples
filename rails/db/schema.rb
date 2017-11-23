@@ -19,7 +19,8 @@ ActiveRecord::Schema.define(version: 20171122171802) do
     t.string "name"
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.jsonb "recent_logins"
+    t.jsonb "recent_successful_logins"
+    t.jsonb "recent_failed_logins"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
