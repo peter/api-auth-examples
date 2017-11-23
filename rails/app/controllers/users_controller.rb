@@ -15,8 +15,7 @@ class UsersController < ApplicationController
     success = (user && user.authenticate(params[:password])).present?
     user.save_recent_login!(success) if user
     if user && success
-      token = AuthToken.encode({user_id: user.id})
-      render json: {token: token}
+      render json: {token: user.auth_token}
     else
       render json: {error: 'invalid credentials'}, status: :unauthorized
     end

@@ -16,6 +16,12 @@ bin/rails db:setup
 bin/rails s
 ```
 
+## Running Tests
+
+```
+bin/rails test
+```
+
 ## Deployment
 
 There is a demo app running on Heroku, see example requests below.
@@ -59,10 +65,6 @@ http $BASE_URL/me Authorization:"Bearer $TOKEN"
 # Failed get user info (=> 401)
 http $BASE_URL/me
 ```
-
-## TODO
-
-* Tests
 
 ## How this App was Created
 

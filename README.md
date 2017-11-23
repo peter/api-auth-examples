@@ -9,7 +9,6 @@ based login.
 ## TODO
 
 * API test for both apps under test
-* Glossary
 
 ## About Json Web Tokens (JWT)
 

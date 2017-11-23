@@ -5,7 +5,7 @@ module AuthToken
   end
 
   def self.from_headers(headers)
-    headers['Authorization'].try(:split, ' ').try(:last)
+    headers['Authorization'] && headers['Authorization'][/^Bearer (.+)$/, 1]
   rescue
     nil
   end
