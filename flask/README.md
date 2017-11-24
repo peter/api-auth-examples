@@ -102,6 +102,8 @@ select * from users;
 
 ## Deployment
 
+There is a [demo Heroku deployment](http://api-auth-flask.herokuapp.com) available.
+
 How Heroku deployment was set up:
 
 ```
@@ -110,6 +112,7 @@ pip freeze > requirements.txt
 echo "web gunicorn app:app" > Procfile
 
 heroku apps:create api-auth-flask
+heroku addons:create heroku-postgresql:hobby-dev -a api-auth-flask
 
 cd ..
 heroku git:remote -a api-auth-flask
@@ -119,6 +122,9 @@ git subtree push --prefix flask heroku master
 heroku run python -a api-auth-flask
 from app import db
 db.create_all()
+exit()
+
+heroku logs --tail -a api-auth-flask
 ```
 
 ## NOTES
