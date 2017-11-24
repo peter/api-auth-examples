@@ -89,7 +89,6 @@ select * from users;
 
 ## TODO
 
-* Return 5 latest successful login_attempts in /me route
 * tests
 * deployment
 * Double register of user yields 500 (db error)

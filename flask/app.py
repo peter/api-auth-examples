@@ -79,8 +79,15 @@ class User(db.Model):
     def verify_password(self, password):
         return password and bcrypt.check_password_hash(self.password_digest, password)
 
+    def recent_successful_logins(self):
+        query = (LoginAttempt.query
+                    .filter_by(user_id=self.id, success=True)
+                    .order_by(LoginAttempt.login_at.desc())
+                    .limit(5))
+        return [{'time': a.login_at} for a in query.all()]
+
     def public_attributes(self):
-        return {'name': self.name, 'email': self.email}
+        return {'name': self.name, 'email': self.email, 'recent_successful_logins': self.recent_successful_logins()}
 
     def __repr__(self):
         return '<User %r>' % self.email
@@ -96,6 +103,9 @@ class LoginAttempt(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     login_at = db.Column(db.DateTime, nullable=False)
     success = db.Column(db.Boolean, nullable=False)
+
+    def public_attributes(self):
+        return {'user_id': self.user_id, 'login_at': self.login_at, 'success': self.success}
 
     def __repr__(self):
         return '<LoginAttempt user_id=%s login_at=%s success=%s>' % (self.user_id, self.login_at, self.success)
