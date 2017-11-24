@@ -1,6 +1,7 @@
 import os
 import re
 import time
+from datetime import datetime
 from functools import wraps
 from flask import g
 from flask import Flask
@@ -36,6 +37,16 @@ def get_request_jwt_claims(headers):
     except Exception as error:
         print('get_request_jwt_claims error=%s' % error)
         return None
+
+def create_login_attempt(user, success):
+    db.session.add(LoginAttempt(user_id=user.id, login_at=datetime.now(), success=success))
+    db.session.commit()
+
+def create_user(attributes):
+    user = User(**attributes)
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 def get_request_user(headers):
     claims = get_request_jwt_claims(headers)
@@ -79,14 +90,22 @@ class UserForm(Form):
     password = StringField('Password', [validators.Required(), validators.Length(min=3, max=80)])
     name = StringField('Name', [validators.Optional(), validators.Length(min=3, max=80)])
 
+class LoginAttempt(db.Model):
+    __tablename__ = 'login_attempts'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    login_at = db.Column(db.DateTime, nullable=False)
+    success = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        return '<LoginAttempt user_id=%s login_at=%s success=%s>' % (self.user_id, self.login_at, self.success)
+
 @app.route('/register', methods=['POST'])
 def register():
     attributes = request.get_json().get('user', {})
     form = UserForm(**attributes)
     if form.validate():
-        user = User(**attributes)
-        db.session.add(user)
-        db.session.commit()
+        user = create_user(attributes)
         return (jsonify({'user': user.public_attributes()}), 201)
     else:
         return (jsonify({'errors': form.errors}), 422)
@@ -96,6 +115,8 @@ def login():
     params = request.get_json()
     user = User.query.filter_by(email=params['email']).first()
     success = user and user.verify_password(params['password'])
+    if user:
+        create_login_attempt(user, success)
     if success:
         return jsonify({'token': create_jwt_token(user.id)})
     else:

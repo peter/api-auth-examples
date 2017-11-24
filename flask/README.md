@@ -89,13 +89,11 @@ select * from users;
 
 ## TODO
 
-* Add exp to token
-* Handle invalid/expired token
-* Double register of user yields 500 (db error)
-* login_attempts table
-* same endpoints as in Rails app
+* Return 5 latest successful login_attempts in /me route
 * tests
 * deployment
+* Double register of user yields 500 (db error)
+* pyflakes
 
 ## NOTES
 
