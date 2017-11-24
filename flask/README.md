@@ -113,6 +113,7 @@ heroku apps:create api-auth-flask
 
 cd ..
 heroku git:remote -a api-auth-flask
+heroku git:remote -a api-auth-flask
 git subtree push --prefix flask heroku master
 
 heroku run python -a api-auth-flask
