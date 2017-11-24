@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def register
     @user = User.new(user_params)
     if @user.save
-      render :show, status: :created
+      render json: {user: @user.public_attributes}, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -22,8 +22,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    user = @current_user.attributes.slice('name', 'email', 'recent_successful_logins', 'recent_failed_logins')
-    render json: {user: user}
+    render json: {user: @current_user.public_attributes}
   end
 
   private

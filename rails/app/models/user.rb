@@ -13,4 +13,8 @@ class User < ApplicationRecord
     self.send("#{attribute}=", ([login] + (self.send(attribute) || [])).first(RECENT_LOGINS_LIMIT))
     save!
   end
+
+  def public_attributes
+    attributes.slice('name', 'email', 'recent_successful_logins', 'recent_failed_logins')
+  end
 end
