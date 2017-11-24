@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from functools import wraps
 from flask import g
 from flask import Flask
@@ -15,11 +16,17 @@ bcrypt = Bcrypt(app)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_ALGORITHM = 'HS256'
+JWT_EXPIRY = 24*3600
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/api-auth-flask-dev'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
+def create_jwt_token(user_id):
+    exp = time.time() + JWT_EXPIRY
+    claims = {'user_id': user_id, 'exp': exp}
+    return str(jwt.encode(claims, SECRET_KEY, algorithm=JWT_ALGORITHM), 'utf-8')
 
 def get_request_jwt_claims(headers):
     try:
@@ -90,8 +97,7 @@ def login():
     user = User.query.filter_by(email=params['email']).first()
     success = user and user.verify_password(params['password'])
     if success:
-        token = str(jwt.encode({'user_id': user.id}, SECRET_KEY, algorithm=JWT_ALGORITHM), 'utf-8')
-        return jsonify({'token': token})
+        return jsonify({'token': create_jwt_token(user.id)})
     else:
         return (jsonify({'error': 'invalid credentials'}), 401)
 
