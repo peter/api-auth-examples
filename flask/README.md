@@ -94,6 +94,14 @@ select * from users;
 * Double register of user yields 500 (db error)
 * pyflakes
 
+## Deployment
+
+```
+echo "web gunicorn app:app" > Procfile
+
+heroku apps:create api-auth-flask
+```
+
 ## NOTES
 
 * No way to protect all routes by default in Flask (https://stackoverflow.com/questions/31368633/how-do-i-make-sure-a-flask-app-has-been-authorized-on-all-routes)
