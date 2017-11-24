@@ -35,6 +35,12 @@ For locally running server:
 export BASE_URL=http://localhost:5000
 ```
 
+For Heroku demo app:
+
+```
+export BASE_URL=http://api-auth-flask.herokuapp.com
+```
+
 Examples below with [httpie](https://httpie.org):
 
 ```
@@ -96,10 +102,22 @@ select * from users;
 
 ## Deployment
 
+How Heroku deployment was set up:
+
 ```
+pip install gunicorn
+pip freeze > requirements.txt
 echo "web gunicorn app:app" > Procfile
 
 heroku apps:create api-auth-flask
+
+cd ..
+heroku git:remote -a api-auth-flask
+git subtree push --prefix flask heroku master
+
+heroku run python -a api-auth-flask
+from app import db
+db.create_all()
 ```
 
 ## NOTES

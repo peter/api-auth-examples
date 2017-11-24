@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_ALGORITHM = 'HS256'
 JWT_EXPIRY = 24*3600
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/api-auth-flask-dev'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
