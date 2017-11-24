@@ -87,13 +87,8 @@ psql api-auth-flask-dev
 select * from users;
 ```
 
-## Deployment
-
-TODO
-
 ## TODO
 
-* require_login filter
 * Add exp to token
 * Handle invalid/expired token
 * Double register of user yields 500 (db error)
@@ -101,6 +96,10 @@ TODO
 * same endpoints as in Rails app
 * tests
 * deployment
+
+## NOTES
+
+* No way to protect all routes by default in Flask (https://stackoverflow.com/questions/31368633/how-do-i-make-sure-a-flask-app-has-been-authorized-on-all-routes)
 
 ## Resources
 

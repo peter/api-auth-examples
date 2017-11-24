@@ -1,5 +1,7 @@
 import os
 import re
+from functools import wraps
+from flask import g
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -18,6 +20,28 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/api-auth-flask-d
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
+def get_request_jwt_claims(headers):
+    try:
+        header_match = re.search('^Bearer (.+)$', headers.get('Authorization', ''))
+        token = header_match and header_match.group(1)
+        return token and jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
+    except Exception as error:
+        print('get_request_jwt_claims error=%s' % error)
+        return None
+
+def get_request_user(headers):
+    claims = get_request_jwt_claims(headers)
+    return claims and User.query.get(claims['user_id'])
+
+def require_login(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        g.current_user = get_request_user(request.headers)
+        if not g.current_user:
+            return (jsonify({'error': 'login required'}), 401)
+        return f(*args, **kwargs)
+    return decorated_function
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -72,12 +96,6 @@ def login():
         return (jsonify({'error': 'invalid credentials'}), 401)
 
 @app.route('/me')
+@require_login
 def me():
-    header_match = re.search('^Bearer (.+)$', request.headers.get('Authorization', ''))
-    token = header_match and header_match.group(1)
-    if token:
-        claims = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        user = User.query.get(claims['user_id'])
-        return jsonify({'user': user.public_attributes()})
-    else:
-        return (jsonify({'error': 'unauthorized'}), 401)
+    return jsonify({'user': g.current_user.public_attributes()})
