@@ -6,10 +6,6 @@ based login.
 * Flask - [source code](flask) | [demo app](http://api-auth-flask.herokuapp.com)
 * Ruby on Rails - [source code](rails) | [demo app](http://api-auth-rails.herokuapp.com)
 
-## TODO
-
-* API test for both apps under test
-
 ## About Json Web Tokens (JWT)
 
 The JWT tokens have three parts - `header.claims.signature` and are base 64 encoded
