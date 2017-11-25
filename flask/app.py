@@ -5,7 +5,8 @@ from datetime import datetime
 from functools import wraps
 from flask import g
 from flask import Flask
-from flask import request
+from flask import send_from_directory
+from flask import request, redirect
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form, StringField, validators
@@ -109,6 +110,14 @@ class LoginAttempt(db.Model):
 
     def __repr__(self):
         return '<LoginAttempt user_id=%s login_at=%s success=%s>' % (self.user_id, self.login_at, self.success)
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
+
+@app.route('/')
+def redirect_to_swagger():
+    return redirect('/static/swagger/index.html')
 
 @app.route('/register', methods=['POST'])
 def register():
