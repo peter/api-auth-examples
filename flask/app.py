@@ -94,7 +94,7 @@ class User(db.Model):
         return '<User %r>' % self.email
 
 class UserForm(Form):
-    email = StringField('Email', [validators.Required(), validators.Length(min=3, max=80)])
+    email = StringField('Email', [validators.Required(), validators.Length(min=3, max=80), validators.Email('must be valid email')])
     password = StringField('Password', [validators.Required(), validators.Length(min=3, max=80)])
     name = StringField('Name', [validators.Optional(), validators.Length(min=3, max=80)])
 

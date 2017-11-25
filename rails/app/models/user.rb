@@ -1,7 +1,8 @@
 class User < ApplicationRecord
+  EMAIL_PATTERN = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   RECENT_LOGINS_LIMIT = 5
   has_secure_password
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, format: {with: EMAIL_PATTERN, on: :create}
 
   def auth_token
     AuthToken.encode({user_id: id})
