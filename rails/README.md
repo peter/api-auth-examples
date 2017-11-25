@@ -16,7 +16,9 @@ bin/rails db:setup
 bin/rails s
 ```
 
-## Running Tests
+## Testing
+
+Running unit tests:
 
 ```
 bin/rails test

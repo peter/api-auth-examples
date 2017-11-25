@@ -27,6 +27,32 @@ Start dev server:
 /bin/start-dev
 ```
 
+## Testing
+
+Running unit tests:
+
+```
+. venv/bin/activate
+pip install pytest
+bin/test
+```
+
+To run integration tests, first start the server:
+
+```
+bin/start-dev
+```
+
+Then run the tests in a different terminal:
+
+```
+deactivate
+cd ..
+pip install pytest
+pip install requests
+BASE_URL=http://localhost:5000 bin/test
+```
+
 ## Example API Requests
 
 For locally running server:
