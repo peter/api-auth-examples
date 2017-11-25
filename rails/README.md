@@ -24,6 +24,21 @@ Running unit tests:
 bin/rails test
 ```
 
+To run integration tests, first start the server:
+
+```
+bin/rails s
+```
+
+Then run the tests in a different terminal:
+
+```
+cd ..
+pip install pytest
+pip install requests
+BASE_URL=http://localhost:3000 bin/test
+```
+
 ## Deployment
 
 There is a demo app running on Heroku, see example requests below.
