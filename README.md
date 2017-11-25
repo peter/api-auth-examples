@@ -3,8 +3,8 @@
 Example implementations of REST APIs with user registration and token (JWT)
 based login.
 
-* Flask app - [source code](flask) | [demo app](http://api-auth-flask.herokuapp.com)
-* Ruby on Rails app - [source code](rails) | [demo app](http://api-auth-rails.herokuapp.com)
+* Flask - [source code](flask) | [demo app](http://api-auth-flask.herokuapp.com)
+* Ruby on Rails - [source code](rails) | [demo app](http://api-auth-rails.herokuapp.com)
 
 ## TODO
 

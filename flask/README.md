@@ -121,8 +121,6 @@ select * from users;
 
 ## TODO
 
-* tests
-* deployment
 * Double register of user yields 500 (db error)
 * pyflakes
 
