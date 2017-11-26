@@ -117,7 +117,7 @@ def send_static(path):
 
 @app.route('/')
 def redirect_to_swagger():
-    return redirect('/static/swagger/index.html')
+    return redirect('static/swagger/index.html')
 
 @app.route('/register', methods=['POST'])
 def register():

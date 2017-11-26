@@ -124,7 +124,42 @@ select * from users;
 * Double register of user yields 500 (db error)
 * pyflakes
 
-## Deployment
+## AWS Lambda Deployment
+
+Setting up deployment with [Zappa](https://github.com/Miserlou/Zappa):
+
+```
+pip install zappa
+zappa init
+zappa deploy dev
+# https://qcaffbx4w7.execute-api.eu-central-1.amazonaws.com/dev
+# To get resources to work: On the API Gateway dashboard choose Resources, click Actions and choose Deploy API
+# Added DATABASE_URL and SECRET_KEY env variables in AWS console UI
+```
+
+NOTE: The root path is /dev and not /. It may be [this cannot be fixed](https://stackoverflow.com/questions/42306810/rewriterules-for-aws-lambda-and-aws-api-gateway) without
+a custom domain.
+
+```
+export BASE_URL=https://qcaffbx4w7.execute-api.eu-central-1.amazonaws.com/dev
+```
+
+Various useful Zappa commands:
+
+```
+zappa status dev
+zappa tail dev
+zappa tail dev --http --filter "POST"
+zappa invoke production 'app.my_function'
+```
+
+To deploy:
+
+```
+zappa update dev
+```
+
+## Heroku Deployment
 
 There is a [demo Heroku deployment](http://api-auth-flask.herokuapp.com) available.
 
