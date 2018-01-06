@@ -9,12 +9,14 @@ from flask import send_from_directory
 from flask import request, redirect
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from wtforms import Form, StringField, validators
 from flask_bcrypt import Bcrypt
 import jwt
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+CORS(app)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_ALGORITHM = 'HS256'
@@ -137,7 +139,9 @@ def login():
     if user:
         create_login_attempt(user, success)
     if success:
-        return jsonify({'token': create_jwt_token(user.id)})
+        return jsonify({
+            'token': create_jwt_token(user.id),
+            'user': user.public_attributes()})
     else:
         return (jsonify({'error': 'invalid credentials'}), 401)
 

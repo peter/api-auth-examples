@@ -207,7 +207,9 @@ heroku logs --tail -a api-auth-flask
 
 * [Flask (Web Framework)](http://flask.pocoo.org)
 * [Flask Documentation (PDF)](http://flask.pocoo.org/docs/0.12/.latex/Flask.pdf)
+
 * [Zappa/AWS Lambda (Deployment)](https://github.com/Miserlou/Zappa)
+* [Update Amazon RDS max_connections with Parameter](https://github.com/jollygoodcode/jollygoodcode.github.io/issues/16)
 
 * [Hug (Python API Framework)](http://www.hug.rest)
 * [Zappa Hug Example (Hug/Lambda Deployment)](https://github.com/mcrowson/zappa-hug-example)
